@@ -135,6 +135,18 @@ const user_update = async (req, res) => {
   }
 };
 
+
+
+const user_supervisors = async (req, res) => {
+  try {
+  
+    const users = await Users.find({role:req.params.role});
+    res.json(users);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
 module.exports = {
   user_all,
   user_details,
@@ -142,4 +154,5 @@ module.exports = {
   user_delete,
   user_update,
   login_user,
+  user_supervisors
 };

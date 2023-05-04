@@ -12,8 +12,6 @@ export default function Login() {
 
 
    const login = async() =>{
-
-    console.log('ok')
         try{
           let res =  await loginUser(email,password)
           console.log(res);

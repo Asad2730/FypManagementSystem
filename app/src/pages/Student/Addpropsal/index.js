@@ -1,9 +1,49 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import {getUserSupervisors,addProposal} from '../../../DB/db'
+
 
 const Addproposal = () => {
+
+  const[supervisors,setSupervisors] = useState([]);
+  
+  const [title,setTitle] = useState();
+  const [member1,setMember1] = useState();
+  const [member2,setMember2] = useState();
+  const [supervisorId,setSupervisorId] = useState();
+  const [proposalFile,setProposalFile] = useState();
+   
+  useEffect(()=>{
+      getSupervisors()
+  },[])
+
+   const getSupervisors = async()=>{
+        
+   let data = await getUserSupervisors('Supervisor');
+   setSupervisors(data);
+   }
+
+   const submit = async() =>{   
+    try{
+
+      console.log('sid',supervisorId)
+    let response = await addProposal(title,member1,member2,supervisorId,proposalFile); ;
+   
+     if(response){
+      setTitle('')
+      setMember1('')
+      setMember2('')
+      setSupervisorId('')
+      setProposalFile('')
+     }
+    }catch(ex){
+       console.log(ex)
+    }   
+ 
+   }
+
   return (
     <>
-      <form>
+     
         <div className="space-y-12 p-3 sm:space-y-16">
           <div>
             <h2 className="text-base text-center font-semibold leading-7 text-gray-900">
@@ -28,6 +68,8 @@ const Addproposal = () => {
                     id="email"
                     className="block p-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Enter Project title"
+                    value={title}
+                    onChange={e=>setTitle(e.target.value)}
                   />
                 </div>
               </div>
@@ -46,6 +88,8 @@ const Addproposal = () => {
                     id="email"
                     className=" p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Member # 1"
+                    value={member1}
+                    onChange={e=>setMember1(e.target.value)}
                   />
                   <input
                     type="text"
@@ -53,6 +97,8 @@ const Addproposal = () => {
                     id="email"
                     className="mt-2 p-2  block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Member # 2"
+                    value={member2}
+                    onChange={e=>setMember2(e.target.value)}
                   />
                 </div>
               </div>
@@ -64,15 +110,21 @@ const Addproposal = () => {
                 >
                   Supervisor
                 </label>
+               
                 <select
                   id="location"
                   name="location"
                   className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue="Canada"
+                  value={supervisorId}
+                  onChange={e=>setSupervisorId(e.target.value)}
                 >
-                  <option>Supervisor 1</option>
-                  <option>Supervisor 2</option>
-                  <option>Supervisor 3</option>
+                   {supervisors.map((i)=>(
+                  <>
+
+                 <option value={i._id}>{i.firstName } { i.lastName}</option>
+                 
+                  </>
+                ))}
                 </select>
               </div>
 
@@ -90,6 +142,7 @@ const Addproposal = () => {
                     id="email"
                     className="block p-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="you@example.com"
+                    onChange={(e) => setProposalFile(e.target.files[0])}
                   />
                 </div>
               </div>
@@ -97,6 +150,7 @@ const Addproposal = () => {
 
             <div className="mt-3 flex items-center justify-center gap-x-6">
               <button
+                onClick={submit}
                 type="button"
                 className="bg-green-500 hover:bg-green-400 px-3 py-2 rounded-lg text-white text-sm font-semibold leading-6 "
               >
@@ -111,7 +165,7 @@ const Addproposal = () => {
             </div>
           </div>
         </div>
-      </form>
+     
     </>
   );
 };
