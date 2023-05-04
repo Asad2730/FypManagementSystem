@@ -1,13 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
+
 const people = [
   {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-    remarks: "remarks",
+    name: "Student Name",
+    title: "Project Name",
+    role: "Admin",
+    email: "janecooper@example.com",
+    telephone: "+1-202-555-0170",
+    imageUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
   },
+  {
+    name: "Student Name",
+    title: "Project Name",
+    role: "Admin",
+    email: "janecooper@example.com",
+    telephone: "+1-202-555-0170",
+    imageUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+  },
+  {
+    name: "Student Name",
+    title: "Project Name",
+    role: "Admin",
+    email: "janecooper@example.com",
+    telephone: "+1-202-555-0170",
+    imageUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+  },
+  {
+    name: "Project Name",
+    title: "Project Name",
+    role: "Admin",
+    email: "janecooper@example.com",
+    telephone: "+1-202-555-0170",
+    imageUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+  },
+  // More people...
 ];
 const Proposals = () => {
   const navigate = useNavigate();
@@ -35,131 +68,48 @@ const Proposals = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        <div className="max-w-sm  relative rounded shadow bg-white dark:bg-gray-800">
-          <img
-            className="h-48 w-96"
-            src="https://www.techrepublic.com/wp-content/uploads/2022/03/project-management-software-best-update.jpeg"
-          />
 
-          <div className="border-t-2 px-6 pt-5 p-5 sm:mt-3 border-gray-200 dark:border-gray-800">
-            <p className="sm:text-lg text-base font-semibold leading-4 text-gray-500 dark:text-gray-400 mt-6">
-              Project Name
-            </p>
-
-            <p className="sm:text-sm text-xs leading-5 text-gray-500 dark:text-gray-400 pt-2">
-              Here some project description if any !
-            </p>
-
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium leading-6 text-white"
-            >
-              Supervisor
-            </label>
-            <select
-              id="location"
-              name="location"
-              className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue="Canada"
-            >
-              <option>Supervisor 1</option>
-              <option>Supervisor 2</option>
-              <option>Supervisor 3</option>
-            </select>
-            <div className="space-x-4 mt-3">
-              <button className="bg-green-500 hover:bg-green-700 px-2 py-1 rounded-lg text-white ">
-                Accept
-              </button>
-              <button className="bg-red-500 hover:bg-red-700  px-2 py-1 rounded-lg text-white ">
-                Reject
-              </button>
+      <ul
+        role="list"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {people.map((person) => (
+          <li
+            key={person.email}
+            className="col-span-1 divide-y divide-gray-200 rounded-lg bg-gray-200 shadow mt-6"
+          >
+            <div className="flex w-full items-center justify-between space-x-6 p-6">
+              <div className="flex-1 truncate">
+                <div className="flex items-center space-x-3">
+                  <h3 className="truncate text-sm font-medium text-gray-900">
+                    {person.name}
+                  </h3>
+                </div>
+                <p className="mt-1 truncate text-sm text-gray-500">
+                  {person.title}
+                </p>
+              </div>
+              <a href="#" class="text-blue-500 underline">
+                Download File
+              </a>
             </div>
-          </div>
-        </div>{" "}
-        <div className="max-w-sm  relative rounded shadow bg-white dark:bg-gray-800">
-          <img
-            className="h-48 w-96"
-            src="https://www.techrepublic.com/wp-content/uploads/2022/03/project-management-software-best-update.jpeg"
-          />
-
-          <div className="border-t-2 px-6 pt-5 p-5 sm:mt-3 border-gray-200 dark:border-gray-800">
-            <p className="sm:text-lg text-base font-semibold leading-4 text-gray-500 dark:text-gray-400 mt-6">
-              Project Name
-            </p>
-
-            <p className="sm:text-sm text-xs leading-5 text-gray-500 dark:text-gray-400 pt-2">
-              Here some project description if any !
-            </p>
-
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium leading-6 text-white"
-            >
-              Supervisor
-            </label>
-            <select
-              id="location"
-              name="location"
-              className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue="Canada"
-            >
-              <option>Supervisor 1</option>
-              <option>Supervisor 2</option>
-              <option>Supervisor 3</option>
-            </select>
-            <div className="space-x-4 mt-3">
-              <button className="bg-green-500 hover:bg-green-700 px-2 py-1 rounded-lg text-white ">
-                Accept
-              </button>
-              <button className="bg-red-500 hover:bg-red-700  px-2 py-1 rounded-lg text-white ">
-                Reject
-              </button>
+            <div>
+              <div className="-mt-px flex divide-x divide-gray-200">
+                <div className="flex w-0 flex-1">
+                  <button className="bg-green-500 hover:bg-green-400 relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+                    Accept
+                  </button>
+                </div>
+                <div className="-ml-px flex w-0 flex-1">
+                  <button className="bg-red-600 hover:bg-red-500 text-white relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold ">
+                    Reject
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="max-w-sm  relative rounded shadow bg-white dark:bg-gray-800">
-          <img
-            className="h-48 w-96"
-            src="https://www.techrepublic.com/wp-content/uploads/2022/03/project-management-software-best-update.jpeg"
-          />
-
-          <div className="border-t-2 px-6 pt-5 p-5 sm:mt-3 border-gray-200 dark:border-gray-800">
-            <p className="sm:text-lg text-base font-semibold leading-4 text-gray-500 dark:text-gray-400 mt-6">
-              Project Name
-            </p>
-
-            <p className="sm:text-sm text-xs leading-5 text-gray-500 dark:text-gray-400 pt-2">
-              Here some project description if any !
-            </p>
-
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium leading-6 text-white"
-            >
-              Supervisor
-            </label>
-            <select
-              id="location"
-              name="location"
-              className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue="Canada"
-            >
-              <option>Supervisor 1</option>
-              <option>Supervisor 2</option>
-              <option>Supervisor 3</option>
-            </select>
-            <div className="space-x-4 mt-3">
-              <button className="bg-green-500 hover:bg-green-700 px-2 py-1 rounded-lg text-white ">
-                Accept
-              </button>
-              <button className="bg-red-500 hover:bg-red-700  px-2 py-1 rounded-lg text-white ">
-                Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };

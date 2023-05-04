@@ -1,4 +1,27 @@
 const Users = require("../models/user");
+const fs = require('fs');
+const multer = require('multer');
+
+
+
+
+//login
+
+const login_user = async (req,res) =>{
+
+  const { email, password } = req.body;
+   try{
+     const user = await Users.findOne({email:email,password:password});
+     if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+   }catch(err){
+    res.json({message:err})
+   }
+
+}
+
 
 //Get All Users
 const user_all = async (req, res) => {
@@ -22,19 +45,24 @@ const user_details = async (req, res) => {
 
 //Add User
 const user_add = async (req, res) => {
+  const file = req.file;
+  console.log('ok',file)
+  
   const user = new Users({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
-    profileImage: req.body.profileImage,
+    profileImage: req.file.path,
     role: req.body.role,
   });
   try {
-    const savedUser = await user.save();
-    res.send(savedUser);
+
+    console.log('path',req.file.path)
+    // const savedUser = await user.save();
+    // res.send(savedUser);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({'message':error.message});
   }
 };
 
@@ -76,4 +104,5 @@ module.exports = {
   user_add,
   user_delete,
   user_update,
+  login_user,
 };

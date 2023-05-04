@@ -6,7 +6,6 @@ const SupervisorLayout = () => {
   return (
     <>
       <SupervisorNavbar />
-      <Outlet />
     </>
   );
 };

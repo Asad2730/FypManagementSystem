@@ -6,7 +6,6 @@ const Evaluatorlayout = () => {
   return (
     <>
       <Evaluatornavbar />
-      <Outlet />
     </>
   );
 };

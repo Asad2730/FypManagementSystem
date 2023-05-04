@@ -2,7 +2,15 @@ const express=require("express");
 const app = express();
 const dotenv=require("dotenv");
 const cors=require("cors");
+const fileUpload = require('express-fileupload');
+
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const path = require('path');
+
+
 const mongoose = require('mongoose');
+
 
 //routes
 const userRoutes=require("./routes/user"); 
@@ -18,13 +26,27 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB!'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
+
+
+
 //middlewares
-app.use(express.json());
+
 app.use(cors());
+app.use(fileUpload());
+
+// Increase the maximum request size limit to 50MB
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json({ limit: '10mb' }));
+
+//app.use('/uploads/', express.static('uploads'));
+
 app.use('/api/users',userRoutes)
 app.use('/api/project',projectRoutes)
 app.use('/api/taskplan',taskPlanRoutes)
 app.use('/api/remarks',remarksRoutes)
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 
 
 

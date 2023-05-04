@@ -1,12 +1,12 @@
 import React from "react";
-import Studentnavbar from "../../components/studentnavbar";
+
 import { Outlet } from "react-router-dom";
+import StudentNavbar from "../../components/studentnavbar";
 
 const StudentLayout = () => {
   return (
     <>
-      <Studentnavbar />
-      <Outlet />
+      <StudentNavbar />
     </>
   );
 };

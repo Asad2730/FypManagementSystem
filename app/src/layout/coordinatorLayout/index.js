@@ -5,7 +5,6 @@ const Coordinatorlayout = () => {
   return (
     <>
       <Coordinatornavbar />
-      <Outlet />
     </>
   );
 };
