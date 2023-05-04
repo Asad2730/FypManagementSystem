@@ -1,19 +1,52 @@
-import React from "react";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import React,{useState} from "react";
+import { addUser } from "../../../DB/db";
+import { useLocation } from 'react-router-dom';
+
+
 const notificationMethods = [
   { id: "Co-ordinator", title: "Co-ordinator" },
   { id: "Supervisor", title: "Supervisor" },
 ];
 
-const permissons = [
-  { id: "yes", title: "Yes" },
-  { id: "no", title: "No" },
-];
+
 
 const Adduser = () => {
+  
+  const location = useLocation();
+  const data = location.state;
+  
+  console.log('data',data)
+
+  const [firstName,setFirstName] = useState();
+  const [lastName,setlastName] = useState();
+  const [email,setEmail] = useState();
+  const [password,setPassword] = useState();
+  const [role,setRole] = useState();
+  const [profileImage,setProfileImage] = useState();
+ 
+  
+
+  const submit = async() =>{   
+   try{
+   
+    let response = await addUser(firstName,lastName,email,password,role,profileImage); 
+    if(response){
+      setFirstName('')
+      setlastName('')
+      setEmail('')
+      setPassword('')
+      setRole('')
+      setProfileImage('')
+    }
+   }catch(ex){
+      console.log(ex)
+   }   
+
+  }
+
   return (
     <>
-      <form>
+   
         <div className="space-y-12 p-3 sm:space-y-16">
           <div>
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -22,25 +55,45 @@ const Adduser = () => {
             <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
               Use a permanent address where you can receive mail.
             </p>
-
+            
             <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Name
+                 First Name
                 </label>
                 <div className="mt-2">
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="text"
                     className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="you@example.com"
+                    placeholder="firstName"
+                    value={firstName}
+                    onChange={e=>setFirstName(e.target.value)}
                   />
                 </div>
               </div>
+
+            
+              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                 Last Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"         
+                    className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder="lastName"
+                    value={lastName}
+                    onChange={e=>setlastName(e.target.value)}
+                  />
+                </div>
+              </div>
+              
 
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
                 <label
@@ -56,6 +109,8 @@ const Adduser = () => {
                     id="email"
                     className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="you@example.com"
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -69,11 +124,11 @@ const Adduser = () => {
                 </label>
                 <div className="mt-2">
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="password"
                     className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="you@example.com"
+                    placeholder="password"
+                    value={password}
+                    onChange={e=>setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -88,10 +143,9 @@ const Adduser = () => {
                 <div className="mt-2">
                   <input
                     type="file"
-                    name="email"
-                    id="email"
                     className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="you@example.com"
+                    onChange={(e) => setProfileImage(e.target.files[0])}
                   />
                 </div>
               </div>
@@ -114,6 +168,8 @@ const Adduser = () => {
                           id={notificationMethod.id}
                           name="notification-method"
                           type="radio"
+                          
+                          onChange={e=>setRole(notificationMethod.title)}
                           defaultChecked={notificationMethod.id === "email"}
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -128,38 +184,12 @@ const Adduser = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Allow to add student ?
-                </label>
-                <div className="mt-2">
-                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    {permissons.map((permissons) => (
-                      <div key={permissons.id} className="flex items-center">
-                        <input
-                          id={permissons.id}
-                          name="notification-method"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label
-                          htmlFor={permissons.id}
-                          className="ml-3 block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          {permissons.title}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+           
             </div>
 
             <div className="mt-3 flex items-center justify-center gap-x-6">
               <button
+                onClick={submit}
                 type="button"
                 className="bg-green-500 hover:bg-green-400 px-3 py-2 rounded-lg text-white text-sm font-semibold leading-6 "
               >
@@ -173,8 +203,9 @@ const Adduser = () => {
               </button>
             </div>
           </div>
+          
         </div>
-      </form>
+      
     </>
   );
 };

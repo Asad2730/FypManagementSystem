@@ -1,6 +1,4 @@
 const Users = require("../models/user");
-const fs = require('fs');
-const multer = require('multer');
 
 
 
@@ -45,26 +43,39 @@ const user_details = async (req, res) => {
 
 //Add User
 const user_add = async (req, res) => {
-  const file = req.file;
-  console.log('ok',file)
+  
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "profileImage") is used to retrieve the uploaded file
+  let sampleFile = req.files.profileImage;
+
+  // Use the mv() method to place the file somewhere on your server
+  await sampleFile.mv('./uploads/' + sampleFile.name, function(err) {
+    if (err) {
+      return res.status(500).send(err);
+    }
+  });
   
   const user = new Users({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
-    profileImage: req.file.path,
+    profileImage: sampleFile.name,
     role: req.body.role,
   });
   try {
 
-    console.log('path',req.file.path)
-    // const savedUser = await user.save();
-    // res.send(savedUser);
+    const savedUser = await user.save();
+    res.json(savedUser);
   } catch (error) {
     res.status(400).send({'message':error.message});
   }
+
 };
+
 
 //Delete User
 const user_delete = async (req, res) => {

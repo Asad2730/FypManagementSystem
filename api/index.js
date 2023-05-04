@@ -5,8 +5,7 @@ const cors=require("cors");
 const fileUpload = require('express-fileupload');
 
 const bodyParser = require('body-parser');
-const multer = require('multer');
-const path = require('path');
+
 
 
 const mongoose = require('mongoose');
@@ -48,6 +47,10 @@ app.use('/api/remarks',remarksRoutes)
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
-
+app.get('/uploads/:filename', (req, res) => {
+  const { filename } = req.params;
+  const path = require('path').join(__dirname, 'uploads', filename);
+  res.sendFile(path);
+});
 
 app.listen(8000,()=>console.log("server up and running on port 8000"))

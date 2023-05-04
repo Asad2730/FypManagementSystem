@@ -1,5 +1,8 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import {users} from '../../../DB/db';
+
+
 const people = [
     {
       name: 'Lindsay Walton',
@@ -13,7 +16,24 @@ const people = [
     // More people...
   ]
 const Users = () => {
+   
   const navigate=useNavigate();
+  
+  const [data,setData] = useState([])
+
+  useEffect(()=>{
+      
+    getData();
+   
+  },[])
+
+  
+  const getData = async () =>{
+   let data = await users();
+   setData(data)
+   console.log(data)
+  }
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -43,9 +63,9 @@ const Users = () => {
                   <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                     Name
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Title
-                  </th>
+                  </th> */}
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Status
                   </th>
@@ -58,23 +78,24 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {people.map((person) => (
+                {data.map((person) => (
                   <tr key={person.email}>
                     <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                       <div className="flex items-center">
                         <div className="h-11 w-11 flex-shrink-0">
-                          <img className="h-11 w-11 rounded-full" src={person.image} alt="" />
+                          
+                          <img className="h-11 w-11 rounded-full" src={`http://localhost:8000/uploads/${person.profileImage}`} alt="" />
                         </div>
                         <div className="ml-4">
-                          <div className="font-medium text-gray-900">{person.name}</div>
+                          <div className="font-medium text-gray-900">{person.firstName+' '+person.lastName}</div>
                           <div className="mt-1 text-gray-500">{person.email}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                      <div className="text-gray-900">{person.title}</div>
-                      <div className="mt-1 text-gray-500">{person.department}</div>
-                    </td>
+                    {/* <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                      <div className="text-gray-900">{person.role}</div>
+                       <div className="mt-1 text-gray-500">{person.department}</div> 
+                    </td> */}
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                       <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
                         Active
@@ -82,8 +103,13 @@ const Users = () => {
                     </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{person.role}</td>
                     <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a  className="text-indigo-600 hover:text-indigo-900">
-                        Edit<span className="sr-only">, {person.name}</span>
+                      <a  className="text-indigo-600 hover:text-indigo-900"
+                        onClick={()=>{
+                           navigate('/adduser',{'editId':person._id});
+                        }}
+                      >
+                        Edit
+                        <span className="sr-only">, {person.firstName+' '+person.lastName}</span>
                       </a>
                     </td>
                   </tr>
