@@ -90,15 +90,41 @@ const user_delete = async (req, res) => {
 //Update User
 const user_update = async (req, res) => {
   try {
-    const user = {
+     
+    let user;
+
+    console.log('here',req.files)
+    if (req.files !== null ) {
+      let sampleFile = req.files.profileImage;
+    // Use the mv() method to place the file somewhere on your server
+    await sampleFile.mv('./uploads/' + sampleFile.name, function(err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+    });
+     
+     user = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
       password: req.body.password,
-      profileImage: req.body.profileImage,
+      profileImage: sampleFile.name,
       role: req.body.role,
     };
 
+    }else{
+      console.log('here11',req.files)
+       user = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        // profileImage: req.body.profileImage,
+        role: req.body.role,
+      };
+    }
+   
+    console.log('ok',user)
     const updatedUser = await Users.findByIdAndUpdate(
       { _id: req.params.id },
       user

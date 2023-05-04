@@ -31,6 +31,10 @@ export default function Login() {
             navigate('hodhome')
             break;
           }
+          case 'Student':{
+            navigate('studenthome')
+               break;
+           }
            default:break;
           }
 

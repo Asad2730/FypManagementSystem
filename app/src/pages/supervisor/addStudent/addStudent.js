@@ -1,63 +1,30 @@
 import React,{useState,useEffect} from "react";
-import { addUser ,getSingleUser,updateUser} from "../../../DB/db";
-;
+import { addUser} from "../../../DB/db";
 
 
-const notificationMethods = [
-  { id: "Co-ordinator", title: "Co-ordinator" },
-  { id: "Supervisor", title: "Supervisor" },
-];
-
-
-
-const Adduser = () => {
+const AddStudent = () => {
   
-  const id = localStorage.getItem('editId');
-  console.log('data',id)
-
   const [firstName,setFirstName] = useState();
   const [lastName,setlastName] = useState();
   const [email,setEmail] = useState();
   const [password,setPassword] = useState();
-  const [role,setRole] = useState();
+
   const [profileImage,setProfileImage] = useState();
 
  
-  useEffect(()=>{
-     
-    if(id!== '-1'){
-     setUser();
-    }
 
-  },[])
-
-
-  const setUser = async() =>{
-    let data = await getSingleUser(id);
-   
-    setFirstName(data.firstName)
-    setlastName(data.lastName)
-    setEmail(data.email)
-    setPassword(data.password)
-    setRole(data.role)
-    setProfileImage(data.profileImage)
-  }
 
   const submit = async() =>{   
    try{
     let response;
-    if(id !== '-1'){
-       response = await updateUser(id,firstName,lastName,email,password,role,profileImage); 
-    }else{
-       response = await addUser(firstName,lastName,email,password,role,profileImage); 
-    }
+  
+       response = await addUser(firstName,lastName,email,password,'Student',profileImage); 
   
     if(response){
       setFirstName('')
       setlastName('')
       setEmail('')
       setPassword('')
-      setRole('')
       setProfileImage('')
     }
    }catch(ex){
@@ -172,40 +139,7 @@ const Adduser = () => {
                 </div>
               </div>
 
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Role
-                </label>
-                <div className="mt-2">
-                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    {notificationMethods.map((notificationMethod) => (
-                      <div
-                        key={notificationMethod.id}
-                        className="flex items-center"
-                      >
-                        <input
-                          id={notificationMethod.id}
-                          name="notification-method"
-                          type="radio"
-                          
-                          onChange={e=>setRole(notificationMethod.title)}
-                          defaultChecked={notificationMethod.id === "email"}
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label
-                          htmlFor={notificationMethod.id}
-                          className="ml-3 block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          {notificationMethod.title}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+           
            
             </div>
 
@@ -232,4 +166,4 @@ const Adduser = () => {
   );
 };
 
-export default Adduser;
+export default AddStudent;
