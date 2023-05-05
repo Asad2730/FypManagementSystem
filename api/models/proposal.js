@@ -28,7 +28,12 @@ const proposalSchema = new mongoose.Schema(
       uid:{
         type:String,
         require:true,
-      }
+      },
+
+      status:{
+        type:String,
+        require:true  
+      },
   },
   {
     timestamps: true,

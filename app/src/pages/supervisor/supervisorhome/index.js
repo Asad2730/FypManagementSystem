@@ -1,8 +1,15 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import {getProposals} from '../../../DB/db';
+
 
 const Supervisorhome = () => {
+
   const navigate = useNavigate();
+  const [data,setData] = useState([]);
+
+
+
   return (
     <>
       {" "}

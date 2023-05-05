@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import {getUserPropsals} from '../../../DB/db'
+import {getUserPropsals,downloadFile} from '../../../DB/db'
 
 const StudentHome = () => {
 
@@ -14,6 +14,12 @@ const StudentHome = () => {
    let response = await getUserPropsals();
    setData(response);
    
+  }
+
+  const download = async(proposalFile)=>{
+      
+      let response = await downloadFile(proposalFile);
+      console.log('response',response)
   }
 
   return (
@@ -48,7 +54,9 @@ const StudentHome = () => {
              Member-2 : {i.proposal.member2} 
             </p>
             <div className="space-x-4 mt-3">
-              <button className="bg-green-500 px-2 py-1 rounded-lg text-white ">
+              <button className="bg-green-500 px-2 py-1 rounded-lg text-white "
+               onClick={()=>download(i.proposal.proposalFile)}
+              >
                 File Download
               </button>
               {/* <button className="bg-blue-500 px-2 py-1 rounded-lg text-white ">

@@ -136,3 +136,42 @@ export const getUserPropsals = async()=>{
     console.log('Error:',ex)
    }
 }
+
+
+export const downloadFile = async (fileName) => {
+  try {
+    const response = await axios.post(`${URL}proposal/downloadFile/${fileName}`, { responseType: 'blob' });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    return response.data;
+  } catch (ex) {
+    console.log('Error:', ex);
+  }
+};
+
+
+
+export const getProposals = async (status) => {
+  try {
+    const response = await axios.get(`${URL}proposal/getProposals/${status}`);   
+    return response.data;
+  } catch (ex) {
+    console.log('Error:', ex);
+  }
+};
+
+
+export const changeProposalStatus = async (id,status) => {
+  try {
+    let obj = {'id':id,'status':status};
+    const response = await axios.put(`${URL}proposal/`,obj);   
+    return response.data;
+  } catch (ex) {
+    console.log('Error:', ex);
+  }
+};

@@ -1,6 +1,7 @@
 const Proposal = require("../models/proposal");
 const  User = require("../models/user");
-
+const fs = require('fs');
+const path = require('path');
 
 
  const add = async (req, res) =>{
@@ -26,6 +27,7 @@ const  User = require("../models/user");
         supervisorId: req.body.supervisorId,
         proposalFile: sampleFile.name,
         uid: req.body.uid,
+        status:'pending',
       });
 
       
@@ -63,9 +65,56 @@ const user_proposals = async (req, res) => {
       res.json({ message: error });
     }
   }
+ 
   
+  const downloadFile = (req, res) => {
+    const fileName = req.params.fileName; // get fileName from URL params
+    const filePath = path.join(__dirname, '../uploads', fileName);
+  
+    fs.readFile(filePath, function (err, data) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+  
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(data);
+    });
+  };
+  
+
+
+  const getProposals = async (req,res)=>{
+    try{
+      let {status} = req.params;
+      const pending = await Proposal.find({'status':status});
+      res.json(pending)
+
+    }catch(ex){
+      res.json(ex)
+    }
+  }
+
+
+  const updateProposatStatus = async (req,res)=>{
+    try{
+      let {id,status} = req.body;
+      const pending = await Proposal.findByIdAndUpdate(
+        { _id: id },
+        {status:status}
+      );
+      res.json(pending)
+
+    }catch(ex){
+      res.json(ex)
+    }
+  }
 
 module.exports = {
     add,
-    user_proposals
+    user_proposals,
+    downloadFile,
+    getProposals,
+    updateProposatStatus
 }
