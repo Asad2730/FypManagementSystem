@@ -6,11 +6,7 @@ const taskPlanSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    asgto1: {
-      type: String,
-      required: true,
-    },
-    asgto2: {
+    asgto: {
       type: String,
       required: true,
     },

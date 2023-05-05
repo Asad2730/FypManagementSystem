@@ -17,14 +17,18 @@ const Addtask = () => {
 
   useEffect(()=>{
     getStudents()
+    setAsgTo(asgto1)
   },[])
 
 
   
   const getStudents = async()=>{   
     let data = await getUserByRole('Student');
-    setStudents(data);
-    setAsgTo(data[0]._id)
+     for(let i =0;i<data.length;i++){
+      if(data[i]._id == asgto1 || data[i]._id == asgto2)
+       setStudents(data);   
+     }
+     
     }
 
  
