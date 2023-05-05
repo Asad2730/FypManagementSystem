@@ -27,19 +27,11 @@ const StudentHome = () => {
                <div className="max-w-sm py-6 relative rounded shadow bg-white dark:bg-gray-800">
           <div className="px-6">
             <div className="w-20 h-20 mt-1 rounded-full absolute flex items-center justify-center bg-gray-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                />
+            <svg width="34" height="24" xmlns="http://www.w3.org/2000/svg"
+             fill-rule="evenodd"
+              clip-rule="evenodd">
+                <path d="M19.757 20.171c-.791.524-1.739.829-2.757.829-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5c0 1.018-.305 1.966-.829 2.757l2.829 2.829-1.414 1.414-2.829-2.829zm-7.654.829h-12.103v-20h7c1.695 1.942 2.371 3 4 3h11v7.103c-1.271-1.297-3.042-2.103-5-2.103-3.863 0-7 3.137-7 7 0 1.958.806 3.729 2.103 5zm4.897-8c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3z"/>
+
               </svg>
             </div>
           </div>
@@ -51,17 +43,17 @@ const StudentHome = () => {
             Supervisor : {i.user.firstName}  {i.user.lastName}
             </p>
             <p className="sm:text-sm text-xs leading-5 text-gray-500 dark:text-gray-400 pt-2">
-             Member1 : {i.proposal.member1} 
+             Member-1 : {i.proposal.member1} 
              <br/>
-             Member1 : {i.proposal.member2} 
+             Member-2 : {i.proposal.member2} 
             </p>
             <div className="space-x-4 mt-3">
               <button className="bg-green-500 px-2 py-1 rounded-lg text-white ">
                 File Download
               </button>
-              <button className="bg-blue-500 px-2 py-1 rounded-lg text-white ">
+              {/* <button className="bg-blue-500 px-2 py-1 rounded-lg text-white ">
                 Apply
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
