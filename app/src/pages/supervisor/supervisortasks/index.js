@@ -1,17 +1,24 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-    deadline: "28-10-2001",
-  },
-  // More people...
-];
+import { getTaskById } from "../../../DB/db";
+
+
+
 const Supervisortask = () => {
   const navigate = useNavigate();
+  const [data,setData] = useState([]);
+
+  useEffect(()=>{
+    loadData();
+  },[])
+
+  const loadData = async ()=>{
+    let res = await getTaskById(localStorage.getItem('Id'));
+    setData(res);
+
+    console.log('id',res)
+  }
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -86,29 +93,29 @@ const Supervisortask = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {people.map((person) => (
-                    <tr key={person.email}>
+                  {data.map((person) => (
+                    <tr key={person.taskPlan._id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                        {person.name}
+                        {person.taskPlan.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
+                      {person.user.firstName}  {person.user.lastName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
+                        {person.taskPlan.description}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
+                        {person.taskPlan.file}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.deadline}
+                        {person.taskPlan.deadline}
                       </td>
                       <td className="relative whitespace-nowrap py-4  text-right text-sm font-medium sm:pr-0">
                         <button
                           href="#"
                           className="text-white hover:bg-green-600 bg-green-500 px-2 py-2 rounded-lg"
                         >
-                          Edit<span className="sr-only">, {person.name}</span>
+                          Edit<span className="sr-only">, {person.taskPlan.name}</span>
                         </button>
                       </td>
                       <td className="relative whitespace-nowrap py-4 text-right text-sm font-medium sm:pr-0">
@@ -116,7 +123,7 @@ const Supervisortask = () => {
                           href="#"
                           className="text-white hover:bg-red-600 bg-red-500 px-2 py-2 rounded-lg"
                         >
-                          Delete<span className="sr-only">, {person.name}</span>
+                          Delete<span className="sr-only">, {person.taskPlan.name}</span>
                         </button>
                       </td>
                     </tr>

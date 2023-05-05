@@ -141,6 +141,7 @@ const user_supervisors = async (req, res) => {
   try {
   
     const users = await Users.find({role:req.params.role});
+    console.log('users',users)
     res.json(users);
   } catch (error) {
     res.json({ message: error.message });

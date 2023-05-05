@@ -17,6 +17,7 @@ const projectRoutes=require("./routes/project");
 const taskPlanRoutes=require("./routes/task_plan"); 
 const remarksRoutes=require("./routes/remarks"); 
 const proposalRoutes=require('./routes/proposal'); 
+const ideaRoutes=require('./routes/idea'); 
 
 //connection String
 dotenv.config();
@@ -46,6 +47,7 @@ app.use('/api/project',projectRoutes)
 app.use('/api/taskplan',taskPlanRoutes)
 app.use('/api/remarks',remarksRoutes)
 app.use('/api/proposal',proposalRoutes)
+app.use('/api/idea',ideaRoutes)
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 

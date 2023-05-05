@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from "react";
-import {getUserSupervisors,addProposal} from '../../../DB/db'
+import {getUserByRole,addProposal} from '../../../DB/db'
 
 
 const Addproposal = () => {
 
   const[supervisors,setSupervisors] = useState([]);
+
+  const[students,setStudents] = useState([]);
   
   const [title,setTitle] = useState();
   const [member1,setMember1] = useState();
@@ -18,15 +20,21 @@ const Addproposal = () => {
 
    const getSupervisors = async()=>{
         
-   let data = await getUserSupervisors('Supervisor');
+   let data = await getUserByRole('Supervisor');
    setSupervisors(data);
+   setSupervisorId(data[0]._id)
+
+   let data2 = await getUserByRole('Student');
+   setStudents(data2);
+   setMember2(data2[0]._id)
+
    }
 
    const submit = async() =>{   
     try{
 
       console.log('sid',supervisorId)
-    let response = await addProposal(title,member1,member2,supervisorId,proposalFile); ;
+    let response = await addProposal(title,localStorage.getItem('Id'),member2,supervisorId,proposalFile); 
    
      if(response){
       setTitle('')
@@ -79,27 +87,26 @@ const Addproposal = () => {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Group Members{" "}
+                  Group Member{" "}
                 </label>
                 <div className="mt-2">
-                  <input
-                    type="text"
-                    name="email"
-                    id="email"
-                    className=" p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Member # 1"
-                    value={member1}
-                    onChange={e=>setMember1(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    name="email"
-                    id="email"
-                    className="mt-2 p-2  block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Member # 2"
-                    value={member2}
-                    onChange={e=>setMember2(e.target.value)}
-                  />
+              
+                
+                <select
+                  id="location"
+                  name="location"
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={member2}
+                  onChange={e=>setMember2(e.target.value)}
+                >
+                   {students.map((i)=>(
+                  <>
+
+                 <option value={i._id}>{i.firstName } { i.lastName}</option>
+                 
+                  </>
+                ))}
+                </select>
                 </div>
               </div>
 

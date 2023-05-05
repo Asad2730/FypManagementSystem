@@ -1,10 +1,56 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
+import {getUserByRole,addTask} from '../../../DB/db';
 
 const Addtask = () => {
+
+  const[students,setStudents] = useState([]);
+  
+  const [name,setName] = useState();
+  const [asgto,setAsgTo] = useState();
+  const [description,setDescription] = useState();
+  const [deadLine,setDeadLine] = useState();
+  const [proposalFile,setProposalFile] = useState();
+
+  const asgto1 = localStorage.getItem('sid1')
+  const asgto2 = localStorage.getItem('sid2')
+
+
+  useEffect(()=>{
+    getStudents()
+  },[])
+
+
+  
+  const getStudents = async()=>{   
+    let data = await getUserByRole('Student');
+    setStudents(data);
+    setAsgTo(data[0]._id)
+    }
+
+ 
+    const submit = async() =>{   
+     try{
+ 
+       console.log('asgnTO',asgto);
+      let response = await addTask(name,asgto,description,deadLine,proposalFile); ;
+    
+       if(response){
+       setName('')
+       setDeadLine('')
+       setDescription('')
+       setAsgTo('')
+       setProposalFile('')
+      }
+     }catch(ex){
+        console.log(ex)
+     }   
+  
+    }
+
   return (
     <>
       {" "}
-      <form>
+     
         <div className="space-y-12 p-3 sm:space-y-16">
           <div>
             <h2 className="text-base text-center font-semibold leading-7 text-gray-900">
@@ -29,6 +75,8 @@ const Addtask = () => {
                     id="email"
                     className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Enter name here"
+                    value={name}
+                    onChange={e=>setName(e.target.value)}
                   />
                 </div>
               </div>
@@ -41,16 +89,21 @@ const Addtask = () => {
                   Assignto
                 </label>
                 <div className="mt-2">
-                  <select
-                    id="location"
-                    name="location"
-                    className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    defaultValue="Student 1"
-                  >
-                    <option>student 1</option>
-                    <option>student 2</option>
-                    <option>student 3</option>
-                  </select>
+                <select
+                  id="location"
+                  name="location"
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={asgto}
+                  onChange={e=>setAsgTo(e.target.value)}
+                >
+                   {students.map((i)=>(
+                  <>
+
+                 <option value={i._id}>{i.firstName } { i.lastName}</option>
+                 
+                  </>
+                ))}
+                </select>
                 </div>
               </div>
 
@@ -68,6 +121,8 @@ const Addtask = () => {
                     id="email"
                     className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Enter Description"
+                    value={description}
+                    onChange={e=>setDescription(e.target.value)}
                   />
                 </div>
               </div>
@@ -86,6 +141,7 @@ const Addtask = () => {
                     id="email"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="you@example.com"
+                    onChange={(e) => setProposalFile(e.target.files[0])}
                   />
                 </div>
               </div>
@@ -104,6 +160,8 @@ const Addtask = () => {
                     id="email"
                     className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Enter Description"
+                    value={deadLine}
+                    onChange={e=>setDeadLine(e.target.value)}
                   />
                 </div>
               </div>
@@ -111,6 +169,7 @@ const Addtask = () => {
 
             <div className="mt-3 flex items-center justify-center gap-x-6">
               <button
+              onClick={submit}
                 type="button"
                 className="bg-green-500 hover:bg-green-400 px-3 py-2 rounded-lg text-white text-sm font-semibold leading-6 "
               >
@@ -125,7 +184,7 @@ const Addtask = () => {
             </div>
           </div>
         </div>
-      </form>
+     
     </>
   );
 };

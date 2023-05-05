@@ -2,7 +2,7 @@ const Proposal = require("../models/proposal");
 const  User = require("../models/user");
 const fs = require('fs');
 const path = require('path');
-
+const Enumerable = require('linq');
 
  const add = async (req, res) =>{
     
@@ -49,15 +49,31 @@ const user_proposals = async (req, res) => {
     try {
       let rs = [];
       const uid = req.params.uid;
-      const proposals = await Proposal.find({ uid: uid });
-      
+      const proposals = await Proposal.find(
+       {
+        $or: [
+          { 'member1': uid },
+          { 'member2': uid },
+          {'supervisorId':uid},
+        ]
+       }
+      );
+       
       for (let i = 0; i < proposals.length; i++) {
-        let id = proposals[i]['uid'];
+        let id = proposals[i]['supervisorId'];
+        let stdId1 =  proposals[i]['member1'];
+        let stdId2 =  proposals[i]['member2'];
+
+         let std1 = await User.findById(stdId1)
+         let std2 = await User.findById(stdId2) 
         let user = await User.findById(id);
-        if (user) {
+
+        if (user && std1 && std2) {
             let proposal = proposals[i];
-          let data = { proposal, user };
+          let data = { proposal, user,std1,std2 };
           rs.push(data);
+         
+          
         }
       }
       res.json(rs);

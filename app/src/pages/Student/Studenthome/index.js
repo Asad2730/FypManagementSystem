@@ -49,9 +49,9 @@ const StudentHome = () => {
             Supervisor : {i.user.firstName}  {i.user.lastName}
             </p>
             <p className="sm:text-sm text-xs leading-5 text-gray-500 dark:text-gray-400 pt-2">
-             Member-1 : {i.proposal.member1} 
+             Member-1 :{i.std1.firstName} {i.std1.lastName}
              <br/>
-             Member-2 : {i.proposal.member2} 
+             Member-2 : {i.std2.firstName} {i.std2.lastName}
             </p>
             <div className="space-x-4 mt-3">
               <button className="bg-green-500 px-2 py-1 rounded-lg text-white "

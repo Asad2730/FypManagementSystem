@@ -88,7 +88,7 @@ export const updateUser = async(id,firstName,lastName,email,password,role,profil
 
 
 
-export const getUserSupervisors = async(role)=>{
+export const getUserByRole = async(role)=>{
 
   try{
     
@@ -175,3 +175,70 @@ export const changeProposalStatus = async (id,status) => {
     console.log('Error:', ex);
   }
 };
+
+
+
+export const addIdea = async(title,proposalFile)=>{
+  try{
+    let data = new FormData();
+    data.append('title',title);
+    data.append('proposalFile',proposalFile);
+    data.append('uid',localStorage.getItem('Id'));
+    let res = await axios.post(`${URL}idea/`,data,
+    { headers: {'Content-Type': 'multipart/form-data'  } })
+
+     console.log('response:',res.data);
+    return res.data;
+  }catch(ex){
+    console.log('Error:', ex);
+  }
+
+}
+
+
+export const getIdeas = async()=>{
+    try{
+      let res = await axios.get(`${URL}idea/`)
+      return res.data; 
+    }catch(ex){
+      console.log('Error:', ex);
+    }
+}
+
+
+export const addTask = async(name,asgto,description,deadLine,proposalFile)=>{
+
+  try{
+   
+    let data = new FormData();
+    data.append('name',name);
+    data.append('proposalFile',proposalFile);
+    data.append('asgby',localStorage.getItem('Id'));
+    data.append('asgto',asgto)
+    data.append('description',description)
+    data.append('deadLine',deadLine)
+
+   let res =await axios.post(`${URL}taskplan`,data,
+    { headers: {'Content-Type': 'multipart/form-data'  } }
+    )
+
+
+    return res.data;
+
+  }catch(ex){
+    console.log(ex);
+  }
+}
+
+
+
+export const getTaskById = async(id) =>{
+ try{
+  let res = await axios.get(`${URL}taskplan/${id}`);
+ 
+  return res.data;
+ }catch(ex){
+  console.log(ex)
+ }
+
+}
