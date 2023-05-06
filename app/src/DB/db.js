@@ -432,7 +432,7 @@ export const adminHome = async ()=>{
   try{
 
     console.log(`${URL}proposal/admin`)
-    let rs = await axios.get(`${URL}proposal/adminHome`)
+    let rs = await axios.get(`${URL}proposal/getx/accept2`)
     return rs.data;
   }catch(ex){
     console.log(ex)
