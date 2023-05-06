@@ -33,11 +33,14 @@ const taskPlanSchema = new mongoose.Schema(
       required: true,
     },
     marks: {
-      type: Number,
+      type: String,
     },
     remarks: {
-      type: Object,
+      type: String,
     },
+    proposalId:{
+    type:String
+    }
   },
   {
     timestamps: true,

@@ -43,7 +43,39 @@ const Enumerable = require('linq');
 }
 
 
+const getEvaluatorProposals = async (req, res) => {
+  try {
 
+   
+    let rs = [];
+    const uid = req.params.uid;
+    const proposals = await Proposal.find(
+     {
+      'evid':uid,
+     }
+    );
+ 
+    for (let i = 0; i < proposals.length; i++) {
+      let id = proposals[i]['supervisorId'];
+      let stdId1 =  proposals[i]['member1'];
+      let stdId2 =  proposals[i]['member2'];
+    
+       let std1 = await User.findById(stdId1)
+       let std2 = await User.findById(stdId2) 
+      let user = await User.findById(id);
+   
+
+      if (user && std1 && std2) {
+        let proposal = proposals[i];
+        let data = { proposal, user,std1,std2 };
+        rs.push(data);            
+      }
+    }
+    res.json(rs);
+  } catch (error) {
+    res.json({ message: error });
+  }
+}
 
 const user_proposals = async (req, res) => {
     try {
@@ -178,15 +210,27 @@ const user_proposals = async (req, res) => {
   }
 
 
-  // const adminHome = async (req, res) => {
+  const getAll = async (req, res) => {
    
-  //   try {
-  //     const proposals = await Proposal.find();
-  //     res.json(proposals);
-  //   } catch (error) {
-  //     res.json({ message: error });
-  //   }
-  // };
+    try {
+      console.log('moiz gando');
+      const proposals = await Proposal.find();
+      res.json(proposals);
+    } catch (error) {
+      res.json({ message: error });
+    }
+  };
+
+  const getProposals2 = async (req,res)=>{
+    try{
+      console.log("penchod")
+      let {status} = req.params;
+      const pending = await Proposal.find({'status':status});
+      res.json(pending)
+    }catch(ex){
+      res.json(ex)
+    }
+  }
 
 module.exports = {
     add,
@@ -195,5 +239,8 @@ module.exports = {
     getProposals,
     updateProposatStatus,
     addEvalouator,
-    adminHome
+    adminHome,
+    getEvaluatorProposals,
+    getAll,
+    getProposals2
 }

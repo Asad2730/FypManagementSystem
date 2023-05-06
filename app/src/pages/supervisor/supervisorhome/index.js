@@ -31,6 +31,7 @@ const Supervisorhome = () => {
           <>
            <div
           onClick={() => {
+            localStorage.setItem('proposalId',i.proposal._id)
             localStorage.setItem('sid1',i.std1._id)
             localStorage.setItem('sid2',i.std2._id)
             navigate("/Supervisortasks")

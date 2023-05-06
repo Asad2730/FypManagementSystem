@@ -10,4 +10,6 @@ router.get("/singleTask/:id",taskPlanController.singleTask);
 router.get("/stdTask/:id",taskPlanController.studentTask);
 router.post("/update/:id",taskPlanController.changeTaskStatus);
 router.get("/taskHistory/:id",taskPlanController.taskHistory);
+router.get("/getProposalsTask/:id",taskPlanController.getProposalTask);
+router.put("/updateTask/:id",taskPlanController.updateTask);
 module.exports = router;

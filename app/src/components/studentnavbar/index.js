@@ -21,7 +21,7 @@ import { NavLink, Outlet } from "react-router-dom";
 const navigation = [
   { name: "Dashboard", to: "/studenthome", icon: HomeIcon, current: true },
   { name: "Add Proposal", to: "/addproposal", icon: UsersIcon, current: false },
-  { name: "Plans", to: "/plans", icon: FolderIcon, current: false },
+  // { name: "Plans", to: "/plans", icon: FolderIcon, current: false },
   { name: "Tasks", to: "/tasks", icon: CalendarIcon, current: false },
   { name: "Logout", to: "/", icon: DocumentDuplicateIcon, current: false },
 ];

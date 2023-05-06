@@ -190,16 +190,7 @@ export const addEvaluator = async(id,evid,status)=>{
 
 
 
-export const adminHome = async ()=>{
-  try{
 
-    console.log(`${URL}proposal/admin`)
-    let rs = await axios.get(`${URL}proposal/admin`)
-    return rs.data;
-  }catch(ex){
-    console.log(ex)
-  }
-}
 
 
 export const addIdea = async(title,proposalFile)=>{
@@ -230,7 +221,7 @@ export const getIdeas = async()=>{
 }
 
 
-export const addTask = async(name,asgto,description,deadLine,proposalFile)=>{
+export const addTask = async(name,asgto,description,deadLine,proposalFile,proposalId)=>{
 
   try{
    
@@ -241,6 +232,7 @@ export const addTask = async(name,asgto,description,deadLine,proposalFile)=>{
     data.append('asgto',asgto)
     data.append('description',description)
     data.append('deadLine',deadLine)
+    data.append('proposalId',proposalId)
 
    let res =await axios.post(`${URL}taskplan`,data,
     { headers: {'Content-Type': 'multipart/form-data'  } }
@@ -393,6 +385,55 @@ export const allRemarks = async(to,detail)=>{
     
      let res =await axios.get(`${URL}remarks/`)
      return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+
+export const getEvaluatorProposals = async()=>{
+
+  try{
+    let uid = localStorage.getItem('Id');
+   let r = await axios.get(`${URL}proposal/getEvaluator/${uid}`)
+   return r.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+
+export const getProposalsTask = async()=>{
+  try{
+    const pid = localStorage.getItem('Pid')
+    let res = await axios.get(`${URL}taskplan/getProposalsTask/${pid}`);
+    return res.data;
+  }catch(ex){
+    console.log('Error',ex)
+  }
+}
+
+
+export const updateTask = async(id,marks,remarks)=>{
+    
+   try{
+
+    let ob = {'marks':marks,'remarks':remarks}
+    let res = await axios.put(`${URL}taskplan/updateTask/${id}}`,ob);
+    return res.data;
+   }catch(ex){
+    console.log('rs',ex)
+   }
+
+}
+
+
+export const adminHome = async ()=>{
+  try{
+
+    console.log(`${URL}proposal/admin`)
+    let rs = await axios.get(`${URL}proposal/adminHome`)
+    return rs.data;
   }catch(ex){
     console.log(ex)
   }

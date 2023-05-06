@@ -9,7 +9,7 @@ const Supervisortask = () => {
   const navigate = useNavigate();
   const [data,setData] = useState([]);
   localStorage.setItem('editTaskId','-1')
-
+   
   useEffect(()=>{
     loadData();
   },[])

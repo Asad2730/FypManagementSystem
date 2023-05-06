@@ -13,6 +13,9 @@ const Addtask = () => {
 
   const asgto1 = localStorage.getItem('sid1')
   const asgto2 = localStorage.getItem('sid2')
+  const proposalId = localStorage.getItem('proposalId')
+
+
   
   const editTaskId = localStorage.getItem('editTaskId')
  
@@ -54,7 +57,7 @@ const Addtask = () => {
      try{
       let response;
       if(editTaskId  === '-1'){
-         response = await addTask(name,asgto,description,deadLine,proposalFile);
+         response = await addTask(name,asgto,description,deadLine,proposalFile,proposalId);
       }else{
         response = await editTask(name,asgto,description,deadLine,proposalFile,editTaskId);
       }

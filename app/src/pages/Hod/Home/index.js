@@ -1,11 +1,10 @@
 import React,{useEffect,useState} from 'react'
 import Navbar from '../../../components/navbar'
-import { useNavigate } from 'react-router-dom'
+
 import { adminHome } from '../../../DB/db';
 
 export default function Hodhome() {
 
-    const navigate = useNavigate();
     const [data,setData] = useState([])
     
   

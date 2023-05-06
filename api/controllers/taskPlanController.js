@@ -1,5 +1,6 @@
 const TaskPlan = require("../models/task_plan");
-const User = require('../models/user');
+const User = require("../models/user");
+
 
 const taskPlan_all = async (req, res) => {
  
@@ -70,6 +71,7 @@ const taskPlan_add = async (req, res) => {
     description: req.body.description,
     file: sampleFile.name,
     status: 'pending',
+    proposalId:req.body.proposalId,
     deadline: Date(req.body.deadline),
    // type: req.body.type,
     marks: req.body.marks,
@@ -164,6 +166,27 @@ const singleTask = async (req, res) => {
   }
 };
 
+const getProposalTask = async (req, res) => {
+  try {
+    let rs =[];
+    let id = req.params.id;
+    const taskPlan = await TaskPlan.find({'proposalId':id});
+    for (let i=0;i<taskPlan.length;i++){
+       let id = taskPlan[i]['asgto']
+       let user = await User.findById(id)
+       if(user){
+        let ob = taskPlan[i];
+        let jsn = {user,ob};
+        rs.push(jsn)
+       }
+    }
+    res.json(rs);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+
 
 
 const studentTask = async (req, res) => {
@@ -224,6 +247,22 @@ const taskHistory = async (req, res) => {
 
 
 
+const updateTask = async (req, res) => {
+  try {
+    
+    let {remarks,marks} = req.body;
+    let id = req.params.id;
+    const taskPlan = await TaskPlan.findByIdAndUpdate(
+      {'_id':id},
+      {'remarks':remarks,'marks':marks}
+    );
+    res.json(taskPlan);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+
 
 
 module.exports = {
@@ -235,5 +274,7 @@ module.exports = {
   singleTask,
   studentTask,
   changeTaskStatus,
-  taskHistory
+  taskHistory,
+  getProposalTask,
+  updateTask
 };

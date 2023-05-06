@@ -1,26 +1,22 @@
 import React,{useState} from "react";
 
-import {addIdea} from '../../../DB/db';
+import { updateTask} from '../../../DB/db';
 
 
 const Evaluteform = () => {
   
   
-  const [title,setTitle] = useState();
-  const [proposalFile,setProposalFile] = useState();
-  
+  const [marks,setMarks] = useState();
+  const [remarks,setRemarks] = useState();
+  const id = localStorage.getItem('Tid')
+   console.log(id,'id')
+
   const submit = async() =>{   
-    try{ 
-      console.log('ok');
-    let response = await addIdea(title,proposalFile); ;
-     if(response){
-      setTitle('')
-      setProposalFile('')
-     }
-    }catch(ex){
-       console.log(ex)
-    }   
- 
+      let r = await updateTask(id,marks,remarks)
+      if(r){
+        setMarks('')
+        setRemarks('')
+      }
    }
 
   return (
@@ -49,7 +45,10 @@ const Evaluteform = () => {
                     name="email"
                     id="email"
                     className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Enter Title"
+                    placeholder="Enter marks"
+                    
+                    value={marks}
+                    onChange={e=>setMarks(e.target.value)}
                   />
                 </div>
               </div>
@@ -62,12 +61,13 @@ const Evaluteform = () => {
                   Add Remarks
                 </label>
                 <div className="mt-2">
-                  <input
-                    type="file"
-                    name="email"
-                    id="email"
+                <input
+                    type="text"
                     className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="you@example.com"
+                    placeholder="Enter re-marks"
+                    numeric
+                    value={remarks}
+                    onChange={e=>setRemarks(e.target.value)}
                   />
                 </div>
               </div>
@@ -75,6 +75,7 @@ const Evaluteform = () => {
 
             <div className="mt-3 flex items-center justify-center gap-x-6">
               <button
+                 onClick={submit}
                 type="button"
                 className="bg-green-500 hover:bg-green-400 px-3 py-2 rounded-lg text-white text-sm font-semibold leading-6 "
               >
