@@ -1,6 +1,28 @@
-import React from "react";
+import React,{useState} from "react";
+
+import {addIdea} from '../../../DB/db';
+
 
 const Evaluteform = () => {
+  
+  
+  const [title,setTitle] = useState();
+  const [proposalFile,setProposalFile] = useState();
+  
+  const submit = async() =>{   
+    try{ 
+      console.log('ok');
+    let response = await addIdea(title,proposalFile); ;
+     if(response){
+      setTitle('')
+      setProposalFile('')
+     }
+    }catch(ex){
+       console.log(ex)
+    }   
+ 
+   }
+
   return (
     <>
       <form>

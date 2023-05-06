@@ -83,7 +83,8 @@ const Addidea = () => {
               >
                 Submit
               </button>
-              <button              
+              <button
+                              
                 type="button"
                 className="bg-red-500 hover:bg-red-400 px-3 py-2 rounded-lg text-white text-sm font-semibold leading-6 "
               >

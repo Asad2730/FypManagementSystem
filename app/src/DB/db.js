@@ -177,6 +177,30 @@ export const changeProposalStatus = async (id,status) => {
 };
 
 
+export const addEvaluator = async(id,evid,status)=>{
+
+  try {
+    let obj = {'id':id,'status':status,'evid':evid};
+    const response = await axios.put(`${URL}proposal/addEvaluator`,obj);   
+    return response.data;
+  } catch (ex) {
+    console.log('Error:', ex);
+  }
+}
+
+
+
+export const adminHome = async ()=>{
+  try{
+
+    console.log(`${URL}proposal/admin`)
+    let rs = await axios.get(`${URL}proposal/admin`)
+    return rs.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
 
 export const addIdea = async(title,proposalFile)=>{
   try{

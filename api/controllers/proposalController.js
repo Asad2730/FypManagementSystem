@@ -127,10 +127,73 @@ const user_proposals = async (req, res) => {
     }
   }
 
+
+  const addEvalouator = async (req,res)=>{
+    try{
+      let {id,evid,status} = req.body;
+      const pending = await Proposal.findByIdAndUpdate(
+        { _id: id },
+        {
+          status:status,
+          evid:evid
+        }
+      );
+      res.json(pending)
+
+    }catch(ex){
+      res.json(ex)
+    }
+  }
+
+
+  const adminHome = async (req,res)=>{
+    console.log('l','okkk')
+    try {
+     let rs = [];
+      const proposals = await Proposal.find({status:'accept2'})
+      console.log('l',proposals.length)
+       
+      for (let i = 0; i < proposals.length; i++) {
+        let id = proposals[i]['supervisorId'];
+        let stdId1 =  proposals[i]['member1'];
+        let stdId2 =  proposals[i]['member2'];
+        let evid = proposals[i]['evid'];
+
+         let std1 = await User.findById(stdId1)
+         let std2 = await User.findById(stdId2) 
+         let user = await User.findById(id);
+         let ev  = await User.findById(evid);
+
+        if (user && std1 && std2 && ev) {
+            let proposal = proposals[i];
+          let data = { proposal, user,std1,std2,ev };
+          rs.push(data);
+              
+        }
+      }
+      res.json(rs);
+    } catch (error) {
+      res.json({ message: error });
+    }
+  }
+
+
+  // const adminHome = async (req, res) => {
+   
+  //   try {
+  //     const proposals = await Proposal.find();
+  //     res.json(proposals);
+  //   } catch (error) {
+  //     res.json({ message: error });
+  //   }
+  // };
+
 module.exports = {
     add,
     user_proposals,
     downloadFile,
     getProposals,
-    updateProposatStatus
+    updateProposatStatus,
+    addEvalouator,
+    adminHome
 }

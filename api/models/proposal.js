@@ -29,7 +29,10 @@ const proposalSchema = new mongoose.Schema(
         type:String,
         require:true,
       },
-
+      evid:{
+        type:String,
+     
+      },
       status:{
         type:String,
         require:true  

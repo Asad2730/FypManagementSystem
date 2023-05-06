@@ -1,18 +1,31 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { useNavigate } from "react-router-dom";
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-    deadline: "25-65-2000",
-    marks: "12",
-  },
-  // More people...
-];
+import { deleteRemarks, getRemarks } from "../../../DB/db";
+
+
 const Evaluatorfeedback = () => {
   const navigate = useNavigate();
+  
+  const [data,setData] = useState([])
+
+  useEffect(()=>{
+     loadData();
+  },[])
+
+  const loadData = async()=>{
+
+    let res = await getRemarks();
+    setData(res)
+  }
+  
+
+
+  const delereRecord = async(id)=>{
+
+    await deleteRemarks(id);
+    loadData()
+  }
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -68,19 +81,19 @@ const Evaluatorfeedback = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {people.map((person) => (
-                      <tr key={person.email}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {person.name}
+                  {data.map((person) => (
+                      <tr key={person.remark._id}>
+                       
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {person.user.firstName}  {person.user.lastName}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.title}
+                          {person.remark.detail}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.email}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <button className="px-3 py-2 bg-red-500 rounded-lg text-white">
+                          <button 
+                            onClick={()=>delereRecord(person.remark._id)}
+                           className="px-3 py-2 bg-red-500 rounded-lg text-white">
                             Delete
                           </button>
                         </td>
@@ -94,7 +107,6 @@ const Evaluatorfeedback = () => {
         </div>
       </div>
     </>
-  );
-};
+  );};
 
 export default Evaluatorfeedback;
