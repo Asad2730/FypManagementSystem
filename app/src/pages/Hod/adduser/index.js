@@ -6,6 +6,7 @@ import { addUser ,getSingleUser,updateUser} from "../../../DB/db";
 const notificationMethods = [
   { id: "Co-ordinator", title: "Co-ordinator" },
   { id: "Supervisor", title: "Supervisor" },
+  { id: "Evaluator", title: "Evaluator" },
 ];
 
 
@@ -180,7 +181,7 @@ const Adduser = () => {
                   Role
                 </label>
                 <div className="mt-2">
-                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-1 sm:space-y-0">
                     {notificationMethods.map((notificationMethod) => (
                       <div
                         key={notificationMethod.id}

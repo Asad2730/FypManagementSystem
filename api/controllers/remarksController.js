@@ -1,20 +1,56 @@
 const Remarks = require("../models/remarks");
+const User = require("../models/user");
 
 //Get All remarks
 const remark_all = async (req, res) => {
   try {
+    let rs = [];
     const remarks = await Remarks.find();
-    res.json(remarks);
+    for(let i=0;i<remarks.length;i++){
+
+      let id = remarks[i]['from'];
+      let user =await User.findById(id);
+
+      let id2 = remarks[i]['to'];
+      let std =await User.findById(id2);      
+      if(user && std){
+        let remark =  remarks[i];
+        let ob = {user,remark,std}
+         rs.push(ob)
+      }
+      
+    }
+
+    res.json(rs);
+    
   } catch (error) {
     res.json({ message: error });
   }
 };
 
-//Get Single remark
-const remark_details = async (req, res) => {
+
+const getUserRemarks = async (req, res) => {
   try {
-    const remarks = await Remarks.findById(req.params.id);
-    res.json(remarks);
+
+    const rs = [];
+    const remarks = await Remarks.find({
+      'from':req.params.id
+    });
+    
+    for(let i=0;i<remarks.length;i++){
+
+      let id = remarks[i]['to'];
+      let user =await User.findById(id);
+     
+      if(user){
+        let remark =  remarks[i];
+        let ob = {user,remark}
+         rs.push(ob)
+      }
+      
+    }
+
+    res.json(rs);
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -25,6 +61,7 @@ const remark_add = async (req, res) => {
   const remark = new Remarks({
     detail: req.body.detail,
     from: req.body.from,
+    to:req.body.to
   });
   try {
     const savedremark = await remark.save();
@@ -64,7 +101,7 @@ const remark_update = async (req, res) => {
 
 module.exports = {
   remark_all,
-  remark_details,
+  getUserRemarks,
   remark_add,
   remark_delete,
   remark_update,

@@ -1,10 +1,28 @@
-import React from 'react'
 
-const people = [
-{ name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-// More people...
-]
+import React,{useEffect,useState} from "react";
+import { allRemarks, deleteRemarks } from "../../../DB/db";
+
+
 const Hodfeedback = () => {
+  
+  const [data,setData] = useState([]);
+  useEffect(()=>{
+    load()
+  },[])
+
+
+  const load = async()=>{
+     let rs = await allRemarks();
+     setData(rs);
+    
+  }
+
+
+  const deleteRecord = async(id) =>{
+      await deleteRemarks(id);  
+      load();
+  }
+    
   return (
     <div className="px-4 sm:px-6 lg:px-8">
     
@@ -31,16 +49,20 @@ const Hodfeedback = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {people.map((person) => (
-                  <tr key={person.email}>
+                {data.map((person) => (
+                  <tr key={person.remark._id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                      {person.name}
+                    {person.user.firstName} {person.user.lastName}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.title}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {person.std.firstName} {person.std.lastName}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.remark.detail}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 
-                    <button className='px-3 py-2 bg-red-500 rounded-lg text-white'>Delete</button>
+                    <button 
+                     onClick={()=>deleteRecord(person.remark._id)}
+                     className='px-3 py-2 bg-red-500 rounded-lg text-white'>Delete</button>
                     </td>
                      
                   </tr>

@@ -1,18 +1,25 @@
-import React from "react";
-const transactions = [
-  {
-    id: "AAPS0L",
-    company: "Chase & Co.",
-    share: "CAC",
-    commission: "+$4.37",
-    price: "$3,509.00",
-    quantity: "12.00",
-    netAmount: "$4,397.00",
-    remarks: "goog",
-  },
-  // More transactions...
-];
+
+import React,{useEffect,useState} from "react";
+import { getTaskHistory } from "../../../DB/db";
+
+
 const Taskhistory = () => {
+
+
+  const taskId = localStorage.getItem('taskId')
+  const [data,setData] = useState([]);
+  useEffect(()=>{
+    load()
+  },[])
+
+
+  const load = async()=>{
+    console.log(taskId)
+    let rs = await getTaskHistory(taskId);
+    setData(rs)
+    console.log(data[0].taskPlan.name,'rs')
+  }
+
   return (
     <>
       {" "}
@@ -75,34 +82,40 @@ const Taskhistory = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {transactions.map((transaction) => (
-                    <tr key={transaction.id}>
+                
+                  {data.map((i)=>(
+                    <>
+
+<tr>
                       <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                        {transaction.id}
+                        {data[0].taskPlan.name}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
-                        {transaction.company}
+                        {}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
-                        {transaction.share}
+                        {}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {transaction.commission}
+                        {}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {transaction.price}
+                        {}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {transaction.quantity}
+                        {}
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {transaction.netAmount}
+                        
                       </td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {transaction.remarks}
+                        
                       </td>
                     </tr>
+                    </>
+
                   ))}
+                
                 </tbody>
               </table>
             </div>

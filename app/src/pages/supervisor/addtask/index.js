@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from "react";
-import {getUserByRole,addTask} from '../../../DB/db';
+import {getUserByRole,addTask,editTask,singleTask} from '../../../DB/db';
 
 const Addtask = () => {
 
@@ -13,15 +13,33 @@ const Addtask = () => {
 
   const asgto1 = localStorage.getItem('sid1')
   const asgto2 = localStorage.getItem('sid2')
-
+  
+  const editTaskId = localStorage.getItem('editTaskId')
+ 
 
   useEffect(()=>{
+   
     getStudents()
-    setAsgTo(asgto1)
+   
+    if(editTaskId !== '-1'){
+      setEdit();
+    }else{
+      setAsgTo(asgto1)
+    }
   },[])
 
 
-  
+  const setEdit =async () =>{
+    
+    let data =await singleTask(editTaskId)
+    console.log(data)
+    setName(data.name)
+    setDeadLine(`${data.deadline}`)
+    setDescription(data.description)
+    setAsgTo(data.asgto)
+    setProposalFile(data.proposalFile)
+
+  }
   const getStudents = async()=>{   
     let data = await getUserByRole('Student');
      for(let i =0;i<data.length;i++){
@@ -34,10 +52,13 @@ const Addtask = () => {
  
     const submit = async() =>{   
      try{
- 
-       console.log('asgnTO',asgto);
-      let response = await addTask(name,asgto,description,deadLine,proposalFile); ;
-    
+      let response;
+      if(editTaskId  === '-1'){
+         response = await addTask(name,asgto,description,deadLine,proposalFile);
+      }else{
+        response = await editTask(name,asgto,description,deadLine,proposalFile,editTaskId);
+      }
+      console.log(response)      
        if(response){
        setName('')
        setDeadLine('')

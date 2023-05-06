@@ -34,7 +34,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const navigation = [
   { name: "Dashboard", to: "/coordinatorhome", icon: HomeIcon, current: false },
-  { name: "Plans", to: "/coordinatorplan", icon: UsersIcon, current: false },
+ 
   {
     name: "Proposal",
     to: "/coordinatorproposals",

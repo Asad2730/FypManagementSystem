@@ -1,15 +1,28 @@
-import React from "react";
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-    remarks: "remarks",
-  },
-  // More people...
-];
+import React,{useEffect,useState} from "react";
+import { getStudentTasks, updateTaskStatus } from "../../../DB/db";
+
 const Studentstasks = () => {
+   
+
+  const [data,setData] = useState([]);
+
+  useEffect(()=>{
+   load();
+  })
+
+  const load = async ()=>{
+    let rs = await getStudentTasks();
+    setData(rs)
+  }
+
+
+  const submit = async (id)=>{
+    console.log('id',id)
+   let rs = await updateTaskStatus(id,'completed')
+   console.log(rs)
+    load()
+}
+
   return (
     <>
       {" "}
@@ -41,31 +54,21 @@ const Studentstasks = () => {
                 >
                   Description
                 </th>
-                <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
-                >
-                  File
-                </th>
+              
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
                   Deadline
                 </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Remarks
-                </th>
+            
                 <th scope="col" className="relative py-3.5 pl-3">
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {people.map((person) => (
+              {data.map((person) => (
                 <tr key={person.email}>
                   <td className="relative py-4 pr-3 text-sm font-medium text-gray-900">
                     {person.name}
@@ -73,20 +76,17 @@ const Studentstasks = () => {
                     <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                    {person.title}
+                    {person.description}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                    {person.email}
+                    {person.deadline}
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-500">
-                    {person.role}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-500">
-                    {person.remarks}
-                  </td>
+                 
                   <td className="relative py-4 pl-3 text-right text-sm font-medium">
                     <td className="relative py-4  text-right text-sm font-medium">
-                      <button className=" bg-green-600 hover:bg-green-500 text-white px-2 py-2 rounded-lg ">
+                      <button 
+                       onClick={()=>submit(person._id)}
+                       className=" bg-green-600 hover:bg-green-500 text-white px-2 py-2 rounded-lg ">
                         Submit
                       </button>
                     </td>

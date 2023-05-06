@@ -2,12 +2,27 @@ const TaskPlan = require("../models/task_plan");
 const User = require('../models/user');
 
 const taskPlan_all = async (req, res) => {
+ 
   try {
-    const taskPlan = await TaskPlan.find();
-    res.json(taskPlan);
+    let rs = [];
+    const uid = req.params.uid;
+    const taskPlans = await TaskPlan.find();
+    
+    for (let i = 0; i < taskPlans.length; i++) {
+      let id = taskPlans[i]['asgby'];
+      let user = await User.findById(id);
+      if (user) {
+          let taskPlan = taskPlans[i];
+        let data = { taskPlan, user };
+        rs.push(data);
+      }
+    }
+    res.json(rs);
   } catch (error) {
-    res.json({ message: error.message });
+    res.json({ message: error });
   }
+
+
 };
 
 const taskPlan_details = async (req, res) => { 
@@ -80,18 +95,53 @@ const taskPlan_delete = async (req, res) => {
 
 const taskPlan_update = async (req, res) => {
   try {
-    const taskPlan = {
+  // let   taskPlan = {
+  //   name: req.body.name,
+  //   asgto: req.body.asgto,
+  //   asgby: req.body.asgby,
+  //   description: req.body.description,
+  //   status: 'pending',
+  //   deadline: Date(req.body.deadline),
+  // };    //console.log('here>>',taskPlan)
+   
+
+
+    if (req.files != null || Object.keys(req.files).length !== 0) {
+       // The name of the input field (i.e. "profileImage") is used to retrieve the uploaded file
+    let sampleFile = req.files.proposalFile;
+  
+    // Use the mv() method to place the file somewhere on your server
+    await sampleFile.mv('./uploads/' + sampleFile.name, function(err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      taskPlan = {
+        name: req.body.name,
+        asgto: req.body.asgto,
+        asgby: req.body.asgby,
+        description: req.body.description,
+        file: sampleFile.name,
+        status: 'pending',
+        deadline: Date(req.body.deadline),
+      };
+    });
+    }else{
+  
+    taskPlan = {
       name: req.body.name,
       asgto: req.body.asgto,
       asgby: req.body.asgby,
       description: req.body.description,
-      file: req.body.file,
-      status: req.body.status,
+      status: 'pending',
       deadline: Date(req.body.deadline),
-      type: req.body.type,
-      marks: req.body.marks,
-      remarks: req.body.remarks,
     };
+
+    }
+  
+      
+   
+    console.log(taskPlan);
     const updatedtaskPlan = await TaskPlan.findByIdAndUpdate(
       { _id: req.params.id },
       taskPlan
@@ -102,10 +152,88 @@ const taskPlan_update = async (req, res) => {
   }
 };
 
+
+const singleTask = async (req, res) => {
+  try {
+    
+    let id = req.params.id;
+    const taskPlan = await TaskPlan.findById(id);
+    res.json(taskPlan);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+
+
+const studentTask = async (req, res) => {
+  try {
+    
+    let id = req.params.id;
+    const taskPlan = await TaskPlan.find({
+      asgto:id,
+      status:'pending'
+    });
+    res.json(taskPlan);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+
+const changeTaskStatus = async (req, res) => {
+  
+  try {
+    const { id } = req.params; 
+    const { status } = req.body; 
+
+    const updatedtaskPlan = await TaskPlan.findByIdAndUpdate(
+      { _id: id },
+      { 'status': status }
+    );
+    res.json(updatedtaskPlan);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+
+const taskHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let rs = [];
+    const taskPlans = await TaskPlan.find({ _id: id });
+    
+    for (let i = 0; i < taskPlans.length; i++) {
+      let asgto = taskPlans[i]['asgto'];
+     
+      let user = await User.findById(asgto);
+      if (user) {
+        let taskPlan = taskPlans[i];
+        let data = { taskPlan, user };
+        rs.push(data);
+        console.log(data);
+      }
+    }
+    res.json(rs);
+  } catch (error) {
+    res.json({ message: error });
+  }
+};
+
+
+
+
+
 module.exports = {
   taskPlan_all,
   taskPlan_details,
   taskPlan_add,
   taskPlan_delete,
   taskPlan_update,
+  singleTask,
+  studentTask,
+  changeTaskStatus,
+  taskHistory
 };

@@ -242,3 +242,134 @@ export const getTaskById = async(id) =>{
  }
 
 }
+
+
+export const deleteTask = async(id)=>{
+  try{
+   let res = await axios.delete(`${URL}taskplan/${id}`);
+   return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+
+export const editTask = async(name,asgto,description,deadLine,proposalFile,tid)=>{
+
+  try{
+   
+    let data = new FormData();
+    data.append('name',name);
+    data.append('proposalFile',proposalFile);
+    data.append('asgby',localStorage.getItem('Id'));
+    data.append('asgto',asgto)
+    data.append('description',description)
+    data.append('deadLine',deadLine)
+   
+   let res =await axios.put(`${URL}taskplan/${tid}`,data,
+    { headers: {'Content-Type': 'multipart/form-data'  } }
+    )
+
+
+    return res.data;
+
+  }catch(ex){
+    console.log(ex);
+  }
+}
+
+
+export const singleTask = async(id)=>{
+
+  try{
+   let res =await axios.get(`${URL}taskplan/singleTask/${id}`)
+    return res.data;
+  }catch(ex){
+    console.log(ex);
+  }
+}
+
+
+export const addRemarks = async(to,detail)=>{
+  try{
+    let obj={from:localStorage.getItem('Id'),to,detail}
+     let res =await axios.post(`${URL}remarks/`,obj)
+     return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+
+export const getRemarks = async()=>{
+  try{
+   
+     let res =await axios.get(`${URL}remarks/${localStorage.getItem('Id')}`)
+     return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+export const deleteRemarks = async(id)=>{
+  try{
+   
+     let res =await axios.delete(`${URL}remarks/${id}`)
+     return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}
+
+
+export const getStudentTasks = async()=>{
+
+  try{
+   let res =await axios.get(`${URL}taskplan/stdTask/${localStorage.getItem('Id')}`)
+    return res.data;
+  }catch(ex){
+    console.log(ex);
+  }
+}
+
+
+
+export const updateTaskStatus = async(id,status)=>{
+  
+  try{
+    let res = await axios.post(`${URL}taskplan/update/${id}`,{'status':status})
+    return res.data;
+  }catch(ex){
+    console.log(ex);
+  }
+}
+
+
+export const getAllTaskCordinator = async()=>{
+  try{
+   let res = await axios.get(`${URL}taskplan`);
+   return res.data;
+  }catch(ex){
+   console.log(ex)
+  }
+}
+
+
+export const getTaskHistory = async(id)=>{
+  try{
+   let res = await axios.get(`${URL}taskplan/taskHistory/${id}`);
+   return res.data;
+  }catch(ex){
+   console.log(ex)
+  }
+}
+
+export const allRemarks = async(to,detail)=>{
+  try{
+    
+     let res =await axios.get(`${URL}remarks/`)
+     return res.data;
+  }catch(ex){
+    console.log(ex)
+  }
+}

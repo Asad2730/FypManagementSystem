@@ -33,6 +33,10 @@ export default function Login() {
             navigate('studenthome')
                break;
            }
+           case 'Evaluator':{
+            navigate('evaluatorhome')
+               break;
+           }
            default:break;
           }
 
