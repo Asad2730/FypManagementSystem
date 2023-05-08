@@ -62,7 +62,7 @@ const Approutes = () => {
           <Route path="/Proposals" element={<Proposals />} />
           <Route path="/Addidea" element={<Addidea />} />
           <Route path="/Addtask" element={<Addtask />} />
-          <Route path="/addStudent" element={<AddStudent/>} />
+          <Route path="/addStudent" element={<AddStudent />} />
           <Route path="/Supervisortasks" element={<Supervisortask />} />
         </Route>
 
@@ -75,6 +75,8 @@ const Approutes = () => {
         </Route>
         <Route element={<Coordinatorlayout />}>
           <Route path="/coordinatorhome" element={<Coordinatorhome />} />
+          <Route path="/coordinatorplan" element={<Coordinatorplans />} />
+
           <Route path="/taskhistory" element={<Taskhistory />} />
           <Route
             path="/coordinatorfeedback"
@@ -91,7 +93,6 @@ const Approutes = () => {
           />
         </Route>
       </Routes>
-      
     </BrowserRouter>
   );
 };
