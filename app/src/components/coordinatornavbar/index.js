@@ -51,13 +51,9 @@ const navigation = [
   { name: "Logout", to: "/", icon: DocumentDuplicateIcon, current: false },
 ];
 
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
-];
 const userNavigation = [
-
+  { name: "Your profile", href: "#" },
+  { name: "Sign out", href: "#" },
 ];
 
 function classNames(...classes) {
@@ -123,8 +119,10 @@ export default function Coordinatornavbar() {
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
-                  <div className="flex h-16 shrink-0 items-center text-white underline">
-                    FYP MANAGEMENT SYSTEM
+                  <div className="flex h-16 shrink-0 items-center">
+                    <h1 className="text-white font-bold text-lg md:text-base lg:text-xl ">
+                      Fyp Management System
+                    </h1>
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -151,19 +149,6 @@ export default function Coordinatornavbar() {
                           ))}
                         </ul>
                       </li>
-
-                      <li className="mt-auto">
-                        <a
-                          href="#"
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
-                        >
-                          <Cog6ToothIcon
-                            className="h-6 w-6 shrink-0"
-                            aria-hidden="true"
-                          />
-                          Settings
-                        </a>
-                      </li>
                     </ul>
                   </nav>
                 </div>
@@ -177,8 +162,10 @@ export default function Coordinatornavbar() {
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center text-white underline">
-            FYP MANAGEMENT SYSTEM
+          <div className="flex h-16 shrink-0 items-center">
+            <h1 className="text-white font-bold text-lg md:text-base lg:text-xl ">
+              Fyp Management System
+            </h1>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -204,19 +191,6 @@ export default function Coordinatornavbar() {
                     </li>
                   ))}
                 </ul>
-              </li>
-
-              <li className="mt-auto">
-                <a
-                  href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
-                >
-                  <Cog6ToothIcon
-                    className="h-6 w-6 shrink-0"
-                    aria-hidden="true"
-                  />
-                  Settings
-                </a>
               </li>
             </ul>
           </nav>
