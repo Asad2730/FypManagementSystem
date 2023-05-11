@@ -1,4 +1,6 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const people = [
   {
@@ -13,6 +15,42 @@ const people = [
 ];
 
 const Coordinatorplans = () => {
+  const navigate = useNavigate();
+  const [allPlans, setallPlans] = useState([]);
+  const [Name, setName] = useState("");
+  const [Description, setDescription] = useState("");
+  const [File, setFile] = useState(null);
+  const [Date, setDate] = useState("");
+
+  const addPlan = async () => {
+    const url = "http://localhost:8000/api/taskplan/";
+    const { data } = await axios.post(url, {
+      name: Name,
+      description: Description,
+      file: File,
+      date: Date,
+    });
+    console.log(data);
+  };
+
+  const getPlans = async () => {
+    const url = "http://localhost:8000/api/taskplan/";
+    const { data } = await axios.get(url);
+    setallPlans(data);
+    console.log(allPlans);
+  };
+
+  const MarkCompleted = async (params) => {
+    const url = `http://localhost:8000/api/taskplan/${params}`;
+    const { data } = await axios.put(url);
+    console.log(data);
+    window.location.reload(false);
+  };
+
+  useEffect(() => {
+    getPlans();
+  }, []);
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -21,10 +59,74 @@ const Coordinatorplans = () => {
             <h1 className="text-2xl  font-semibold leading-6 text-gray-900">
               Plans
             </h1>
-            <p className="mt-2 text-sm text-gray-700">
-              A list of all the users in your account including their name,
-              title, email and role.
-            </p>
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <div className="mt-2">
+            <input
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              name="planname"
+              id="planname"
+              className="block w-52 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Name"
+            />
+          </div>
+
+          <div className="mt-2">
+            <input
+              onChange={(e) => setDescription(e.target.value)}
+              type="text"
+              name="plandescription"
+              id="plandescription"
+              className="block w-52 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Description"
+            />
+          </div>
+          <div className="mt-2">
+            <input
+              // onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              name="planfile"
+              id="planfile"
+              className=" p-1 w-52 rounded-md  py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="File"
+            />
+          </div>
+
+          <div className="mt-2">
+            <input
+              onChange={(e) => setDate(e.target.value)}
+              type="date"
+              name="plandate"
+              id="plandate"
+              className="block p-2 w-52 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Deadline"
+            />
+          </div>
+          <div className="mt-2">
+            <button
+              onClick={addPlan}
+              className="flex flex-row bg-green-500 hover:bg-green-600 px-4 py-1 text-white rounded-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Add
+            </button>
           </div>
         </div>
         <div className="mt-8 flow-root">
@@ -39,12 +141,7 @@ const Coordinatorplans = () => {
                     >
                       Name
                     </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Assignto
-                    </th>
+
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -68,13 +165,13 @@ const Coordinatorplans = () => {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Marks
+                      Remarks
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Remarks
+                      Action
                     </th>
                     <th
                       scope="col"
@@ -85,31 +182,40 @@ const Coordinatorplans = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {people.map((person) => (
-                    <tr key={person.email}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                        {person.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.deadline}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.marks}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.remarks}
-                      </td>
-                    </tr>
-                  ))}
+                  {allPlans.length == 0 ? (
+                    <h1>No Data Found</h1>
+                  ) : (
+                    allPlans.map((plan) => (
+                      <tr key={plan._id}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                          {plan.taskPlan.name}
+                        </td>
+
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {plan.taskPlan.description}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {plan.taskPlan.file}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {plan.taskPlan.deadline}
+                        </td>
+                        <td></td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {plan.taskPlan.status != "completed" ? (
+                            <button
+                              onClick={() => MarkCompleted(plan.taskPlan._id)}
+                              className="bg-green-500 px-2 py-1 text-white rounded-lg hover:bg-green-600"
+                            >
+                              Complete Plan
+                            </button>
+                          ) : (
+                            <p>{plan.taskPlan.status}</p>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

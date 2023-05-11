@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 const people = [
   {
     name: "Lindsay Walton",
@@ -10,12 +11,23 @@ const people = [
   // More people...
 ];
 const Plans = () => {
+  const [getPlans, setgetPlans] = useState([]);
+  const getmyPlans = async () => {
+    const url = "http://localhost:8000/api/taskplan/";
+    const { data } = await axios.get(url);
+    console.log("🚀 ~ file: index.js:17 ~ getmyPlans ~ data:", data);
+    setgetPlans(data);
+  };
+  useEffect(() => {
+    getmyPlans();
+  }, []);
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-base mt-3 text-center font-semibold leading-6 text-gray-900">
+            <h1 className="text-base mt-3  font-semibold leading-6 text-gray-900">
               Plans
             </h1>
           </div>
@@ -67,37 +79,46 @@ const Plans = () => {
               </tr>
             </thead>
             <tbody>
-              {people.map((person) => (
-                <tr key={person.email}>
-                  <td className="relative py-4 pr-3 text-sm font-medium text-gray-900">
-                    {person.name}
-                    <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
-                    <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
-                  </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                    {person.title}
-                  </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                    {person.email}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-500">
-                    {person.role}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-500">
-                    {person.remarks}
-                  </td>
-                  <td className="relative py-4 pl-3 text-right text-sm font-medium">
-                    <button className=" bg-blue-600 hover:bg-blue-500 text-white px-2 py-2 rounded-lg ">
-                      Apply
-                    </button>
-                  </td>
-                  <td className="relative py-4  text-right text-sm font-medium">
-                    <button className=" bg-green-600 hover:bg-green-500 text-white px-2 py-2 rounded-lg ">
-                      Download
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {getPlans.map((plans) =>
+                plans.taskPlan.type == "plan" ? (
+                  <tr key={plans.taskPlan._id}>
+                    <td className="relative py-4 pr-3 text-sm font-medium text-gray-900">
+                      {plans.taskPlan.name}
+                      <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
+                      <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
+                    </td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      {plans.taskPlan.description}
+                    </td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
+                      {plans.taskPlan.file}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {plans.taskPlan.deadline.split("T")[0]}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500"></td>
+                    <td className="relative py-4 pl-3 text-right text-sm font-medium">
+                      {plans.taskPlan.status != "completed" ? (
+                        <button className=" bg-blue-600 hover:bg-blue-500 text-white px-2 py-2 rounded-lg ">
+                          Apply
+                        </button>
+                      ) : (
+                        <div></div>
+                      )}
+                    </td>
+                    <td className="relative py-4 space-x-4 text-right text-sm font-medium">
+                      <button className=" bg-green-600 hover:bg-green-500 text-white px-2 py-2 rounded-lg ">
+                        Download
+                      </button>
+                      <button className=" bg-gray-800 hover:bg-gray-600 text-white px-2 py-2 rounded-lg ">
+                        Submit
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr></tr>
+                )
+              )}
             </tbody>
           </table>
         </div>

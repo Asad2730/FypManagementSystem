@@ -1,24 +1,20 @@
-
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { getTaskHistory } from "../../../DB/db";
 
-
 const Taskhistory = () => {
+  const taskId = localStorage.getItem("taskId");
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    load();
+  }, []);
 
-
-  const taskId = localStorage.getItem('taskId')
-  const [data,setData] = useState([]);
-  useEffect(()=>{
-    load()
-  },[])
-
-
-  const load = async()=>{
-    console.log(taskId)
+  const load = async () => {
+    console.log(taskId);
     let rs = await getTaskHistory(taskId);
-    setData(rs)
-    console.log(data[0].taskPlan.name,'rs')
-  }
+    console.log("🚀 ~ file: index.js:19 ~ load ~ rs:", rs);
+    setData(rs);
+    // console.log(data[0].taskPlan.name, "rs");
+  };
 
   return (
     <>
@@ -82,40 +78,32 @@ const Taskhistory = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                
-                  {data.map((i)=>(
+                  {data.map((data) => (
                     <>
-
-<tr>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                        {data[0].taskPlan.name}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
-                        {}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
-                        {}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        {}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        
-                      </td>
-                    </tr>
+                      <tr>
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                          {data.taskPlan.name}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                          {data.user.firstName} {data.user.lastName}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
+                          {data.taskPlan.description}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                          {data.taskPlan.file}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                          {data.taskPlan.deadline}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                          {data.taskPlan.type}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500"></td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500"></td>
+                      </tr>
                     </>
-
                   ))}
-                
                 </tbody>
               </table>
             </div>

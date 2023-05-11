@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { addUser, getSingleUser, updateUser } from "../../../DB/db";
 import { Navigate, useNavigate } from "react-router-dom";
-const notificationMethods = [{ id: "Co-ordinator", title: "Co-ordinator" }];
-
-const Adduser = () => {
+const notificationMethods = [
+  { id: "Supervisor", title: "Supervisor" },
+  { id: "Student", title: "Student" },
+  { id: "Evaluator", title: "Evaluator" },
+];
+const Addperson = () => {
   const navigate = useNavigate();
   const id = localStorage.getItem("editId");
   console.log("data", id);
@@ -68,9 +71,9 @@ const Adduser = () => {
       console.log(ex);
     }
   };
-
   return (
     <>
+      {" "}
       <div className="space-y-12 p-3 sm:space-y-16">
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -177,11 +180,11 @@ const Adduser = () => {
                 Role
               </label>
               <div className="mt-2">
-                <div className="space-y-4 sm:flex sm:items-center sm:space-x-1 sm:space-y-0">
+                <div className="space-y-4  sm:flex sm:items-center sm:space-x-1 sm:space-y-0">
                   {notificationMethods.map((notificationMethod) => (
                     <div
                       key={notificationMethod.id}
-                      className="flex items-center"
+                      className="flex justify-between items-center "
                     >
                       <input
                         checked
@@ -190,7 +193,7 @@ const Adduser = () => {
                         type="radio"
                         onChange={(e) => setRole(notificationMethod.title)}
                         defaultChecked={notificationMethod.id === "email"}
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        className="h-4 w-4 ml-2 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                       />
                       <label
                         htmlFor={notificationMethod.id}
@@ -227,4 +230,4 @@ const Adduser = () => {
   );
 };
 
-export default Adduser;
+export default Addperson;
