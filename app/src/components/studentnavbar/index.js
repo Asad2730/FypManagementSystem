@@ -18,7 +18,10 @@ const navigation = [
   { name: "Dashboard", to: "/studenthome", icon: HomeIcon, current: false },
   { name: "Add Proposal", to: "/addproposal", icon: UsersIcon, current: false },
   { name: "Plans", to: "/plans", icon: FolderIcon, current: false },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7be9394b4a6e442c17dde6d0f8c45c2841b57453
   { name: "Tasks", to: "/tasks", icon: CalendarIcon, current: false },
   { name: "Ideas", to: "/ideas", icon: LightBulbIcon, current: false },
 

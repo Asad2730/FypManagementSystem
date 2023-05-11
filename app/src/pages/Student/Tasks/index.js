@@ -62,6 +62,7 @@ const Studentstasks = () => {
                 >
                   Description
                 </th>
+<<<<<<< HEAD
                 <th
                   scope="col"
                   className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
@@ -74,6 +75,8 @@ const Studentstasks = () => {
                 >
                   Deadline
                 </th>
+=======
+>>>>>>> 7be9394b4a6e442c17dde6d0f8c45c2841b57453
 
                 <th
                   scope="col"
@@ -85,6 +88,10 @@ const Studentstasks = () => {
                 <th scope="col" className="relative py-3.5 pl-3">
                   <span className="sr-only">Edit</span>
                 </th>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7be9394b4a6e442c17dde6d0f8c45c2841b57453
                 <th scope="col" className="relative py-3.5 pl-3">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -98,6 +105,7 @@ const Studentstasks = () => {
                       {task.taskPlan.name}
                       <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
                       <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
+<<<<<<< HEAD
                     </td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                       {task.taskPlan.description}
@@ -124,6 +132,26 @@ const Studentstasks = () => {
                         Submit
                       </button>
                     </td>
+=======
+                    </td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      {task.taskPlan.description}
+                    </td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
+                      {task.taskPlan.deadline.split("T")[0]}
+                    </td>
+
+                    <td className="relative py-4 pl-3 text-right text-sm font-medium">
+                      <td className="relative py-4  text-right text-sm font-medium">
+                        <button
+                          onClick={() => submit(task._id)}
+                          className=" bg-green-600 hover:bg-green-500 text-white px-2 py-2 rounded-lg "
+                        >
+                          Apply
+                        </button>
+                      </td>
+                    </td>
+>>>>>>> 7be9394b4a6e442c17dde6d0f8c45c2841b57453
                   </tr>
                 ) : (
                   <tr></tr>
